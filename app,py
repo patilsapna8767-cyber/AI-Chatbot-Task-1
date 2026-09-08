@@ -1,0 +1,24 @@
+from flask import Flask, render_template, request, jsonify
+app = Flask(__name__)
+
+def get_bot_response(user_msg):
+    msg = user_msg.lower()
+    if "hello" in msg or "hi" in msg:
+        return "Hello Sapana! I am your AI Assistant. How can I help you?"
+    elif "generative ai" in msg:
+        return "Generative AI is transforming Higher Education!"
+    else:
+        return f"You said: {user_msg}"
+
+@app.route("/")
+def home():
+    return "AI Chatbot is running! Add templates folder for UI."
+
+@app.route("/get_response", methods=["POST"])
+def response():
+    user_msg = request.json.get("message")
+    bot_reply = get_bot_response(user_msg)
+    return jsonify({"reply": bot_reply})
+
+if __name__ == "__main__":
+    app.run(debug=True)
